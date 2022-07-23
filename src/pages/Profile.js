@@ -1,18 +1,21 @@
-import React, { useEffect, useState } from "react";
-import {Button, Card, Container} from "react-bootstrap";
-import {Navigate,useNavigate} from "react-router-dom";
-import axios from 'axios';
+import React, { useEffect, useState, } from "react";
+import { Card, Container, Button } from "react-bootstrap";
+import { Navigate, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-function Profile({setIsLogedIn, isLogedIn}){
-    const [name, setName]= useState('');
-    const [email, setEmail]= useState('');
+
+function Profile({isLogedIn, setIsLogedIn}) {
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const navigate = useNavigate();
+   
 
-    useEffect(() => {
+    useEffect (() => {
         const token = localStorage.getItem('eshop_jwt');
         axios.get('https://eshop.reskimulud.my.id/user', {
             headers: {
-                'Authorization' : `Bearer ${token}`,
+                'Authorization' : `Bearer ${token}`, 
             },
         }).then((res) => {
             setName(res.data.data.user.name);
@@ -20,9 +23,9 @@ function Profile({setIsLogedIn, isLogedIn}){
         });
     }, []);
 
-    if (!isLogedIn){
-        return(
-            <Navigate to='/auth/login' replace/>
+    if(!isLogedIn) {
+        return (
+            <Navigate to="/auth/login" replace />
         );
     }
 
@@ -32,14 +35,15 @@ function Profile({setIsLogedIn, isLogedIn}){
         navigate('/auth/login');
     };
 
-        return(
-            <Container>
-                <Card className="m-3 p-3">
-                    <Card.Title>Name : {name}</Card.Title>
-                    <Card.Subtitle>email: {email}</Card.Subtitle>
-                    <Button onClick={onLogout} variant="warning">Logout</Button>
-                </Card>
-            </Container>
-        );   
+    return (
+        <Container>
+            <Card className="m-3 p-3">
+                <Card.Title>Name : {name}</Card.Title>
+                <Card.Subtitle>Email : {email}</Card.Subtitle>
+                <Button onClick={onLogout} variant="info">Logout</Button>
+            </Card>
+        </Container>
+    );
 }
+
 export default Profile;
